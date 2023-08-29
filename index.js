@@ -77,8 +77,8 @@ app.post('/send_email/', function (req, res) {
       if (decoded.email) {
          var from = decoded.email;
          var to = req.body.to;
-         var dateTime = btoa(req.body.dateandtime);
-         var message = btoa(req.body.message);
+         var dateTime = Buffer.from(req.body.dateandtime).toString('base64');
+         var message = Buffer.from(req.body.message).toString('base64');
          var personalContent = req.body.personalContent;
 
          var data = {
