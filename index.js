@@ -184,6 +184,32 @@ app.post('/delete_email/', async function (req, res) {
 
 })
 
+//DELETING-ALL-EMAILS
+app.post('/delete_all_emails/', async function (req, res) {
+
+   try {
+      var token = req.body['token'];
+
+      var decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+
+      if (decoded.email) {
+         await db.collection('connect2me_email_collection').deleteMany({ to: decoded.email }, function (err, collection) {
+            if (err) throw err;
+            console.log(collection)
+            return collection;
+         });
+
+         res.send({ message: "all emails deleted" });
+
+         res.end();
+      }
+   }
+   catch (e) {
+      res.send({ error: e.message });
+   }
+
+})
+
 //DELETING-ACCOUNT
 app.post('/delete_account/', async function (req, res) {
 
