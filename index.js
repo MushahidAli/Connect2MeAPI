@@ -37,7 +37,7 @@ app.post('/sign_up/', async function (req, res) {
 
 //VIEW-SIGNUP-DATA
 app.get('/check_availability/:id', async function (req, res) {
-   var answer = await db.collection('connect2me_logon_collection').findOne({ email: req.params['id'].toLowerCase() } function (err, collection) {
+   var answer = await db.collection('connect2me_logon_collection').findOne({ email: req.params['id'].toLowerCase() }, function (err, collection) {
       if (err) throw err;
       console.log(collection)
       return collection;
