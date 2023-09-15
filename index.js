@@ -42,7 +42,7 @@ app.get('/check_availability/:id', async function (req, res) {
       console.log(collection)
       return collection;
    });
-   if (answer) { res.send({ email: req.params.id.toLowerCase(), description: 'Email Address Does Exist!' }); }
+   if (answer) { res.send({ _id: 'Does Exist', email: req.params.id.toLowerCase(), description: 'Email Address Does Exist!' }); }
    else { res.send({ email: 'No', description: 'No Such Email Address Present In The Database!' }); }
    res.end();
 })
