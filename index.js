@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const cron = require("cron");
 
 const app = express();
 
@@ -18,6 +19,19 @@ app.use(bodyParser.urlencoded({
    extended: true
 }));
 app.use(express.json());
+
+function keepAlive() {
+   console.log("Keep-alive ping received at", new Date().toLocaleTimeString());
+}
+
+// Set up a cron job to call the keep-alive function every 14 minutes
+const keepAliveCronJob = new cron.CronJob('*/14 * * * *', () => {
+   keepAlive();  // This simulates activity by calling the keep-alive function
+   console.log("Cron job executed to keep the server active.");
+});
+
+// Start the cron job
+keepAliveCronJob.start();
 
 //SIGNUP
 app.post('/sign_up/', async function (req, res) {
