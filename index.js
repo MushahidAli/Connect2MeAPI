@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const cron = require("cron");
+const axios = require("axios");
 
 const app = express();
 
@@ -20,14 +21,24 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.json());
 
-function keepAlive() {
-   console.log("Keep-alive ping received at", new Date().toLocaleTimeString());
+// Function to send a GET request to the check_availability endpoint dynamically
+async function checkAvailability() {
+   try {
+      const emailToCheck = "test@connect2me.com";
+      const host = `https://connect2meapi.onrender.com/check_availability/${emailToCheck}`;
+      const hostLocal = `http://localhost:3000/check_availability/${emailToCheck}`;
+
+      const response = await axios.get(host);
+      console.log("Response from /check_availability API:", response);
+   } catch (error) {
+      console.error("Error making GET request to /check_availability API:", error);
+   }
 }
 
-// Set up a cron job to call the keep-alive function every 14 minutes
+// Set up a cron job to send the GET request every 14 minutes
 const keepAliveCronJob = new cron.CronJob('*/14 * * * *', () => {
-   keepAlive();  // This simulates activity by calling the keep-alive function
-   console.log("Cron job executed to keep the server active.");
+   console.log("Cron job executed to check availability.");
+   checkAvailability();
 });
 
 // Start the cron job
